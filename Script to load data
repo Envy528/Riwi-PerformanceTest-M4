@@ -1,0 +1,55 @@
+/* 
+	load information
+*/
+
+-- cities data
+INSERT INTO riwi_cities (riwi_city_name)
+VALUES
+('Barranquilla'),
+('Cartagena'),
+('Santa Marta');
+
+-- categories data
+INSERT INTO riwi_categories(riwi_category_name)
+VALUES
+('Consumibles'),
+('Elementos Protección'),
+('Herramientas');
+
+-- suppliers data
+INSERT INTO riwi_suppliers(riwi_supplier_name, riwi_id_city)
+VALUES
+('Aceros del Norte S.A.S', 2),
+('Industriales S.A.S', 1),
+('Suministros Global S.A.S', 3);
+
+-- warehouses data
+INSERT INTO riwi_warehouses(riwi_warehouse_name, riwi_id_city)
+VALUES
+('Bodega Central', 1),
+('Bodega Costa', 3),
+('Centro Logistico Norte', 2);
+
+-- products data
+INSERT INTO riwi_products(riwi_product_name, riwi_id_category)
+VALUES
+('Casco Industrial', 2),
+('Disco de Corte 4.5', 3),
+('Electrodo E6013', 1),
+('Guantes de Nitrilo', 2);
+
+/* inventory movements data and purcharses data
+	I used pgadmin CSV import method to import the data from CSV
+	
+	How to do it?
+	- Go to bd_jorge_carmona_mulata > shcemas > public > tables
+	- Right click to the desired table (e.g. riwi_purcharses)
+	- Click on import/export data-
+	- Select Import
+	- in Filename Paste or search the filepath and it's name
+	- in Format select csv
+	- in encoding select UTF8
+	- Go to options tab
+	- Activate Header check
+	- Click OK
+*/

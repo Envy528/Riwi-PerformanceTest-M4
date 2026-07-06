@@ -1,0 +1,139 @@
+/*
+	SQL Queries
+*/
+
+-- 1 Query
+SELECT
+pro.riwi_product_name AS product,
+SUM(im.riwi_quantity) AS quantity
+FROM riwi_products pro
+JOIN riwi_purcharses pu
+ON pro.id = pu.riwi_id_product
+JOIN riwi_inventory_movements im
+ON pu.riwi_id_product = im.id
+WHERE im.riwi_movement_type = 'IN'
+GROUP BY pro.riwi_product_name
+ORDER BY quantity DESC;
+
+-- 2 Query
+SELECT
+im.riwi_movement_type AS movement,
+pro.riwi_product_name AS product,
+w.riwi_warehouse_name AS warehouse,
+COUNT(*) as times_moved
+FROM riwi_inventory_movements im
+JOIN riwi_purcharses pu
+ON im.id = pu.riwi_id_movement
+JOIN riwi_products pro
+ON pu.riwi_id_product = pro.id
+JOIN riwi_warehouses w
+ON pu.riwi_id_warehouse = w.id
+GROUP BY im.riwi_movement_type, pro.riwi_product_name, w.riwi_warehouse_name;
+
+-- 3 Query
+SELECT
+s.riwi_supplier_name AS supplier,
+SUM(im.riwi_unit_price * im.riwi_quantity) AS total_value
+FROM riwi_suppliers s
+JOIN riwi_purcharses pu
+ON s.id = pu.riwi_id_supplier
+JOIN riwi_inventory_movements im
+ON pu.riwi_id_movement = im.id
+WHERE im.riwi_movement_type = 'IN'
+GROUP BY s.riwi_supplier_name
+ORDER BY total_value DESC;
+
+-- 4 Query
+SELECT
+w.riwi_warehouse_name AS warehouse,
+COUNT(*) AS amount_of_movements
+FROM riwi_warehouses w
+JOIN riwi_purcharses pu
+ON w.id = pu.riwi_id_warehouse
+JOIN riwi_inventory_movements im
+ON pu.riwi_id_movement = im.id
+GROUP BY w.riwi_warehouse_name
+ORDER BY amount_of_movements DESC;
+
+-- 5 Query
+SELECT 
+pro.riwi_product_name AS product,
+COUNT(*) AS times_purcharsed
+FROM riwi_products pro
+JOIN riwi_purcharses pu
+ON pro.id = pu.riwi_id_product
+GROUP BY pro.riwi_product_name
+ORDER BY times_purcharsed DESC;
+
+-- 6 Query
+SELECT
+w.riwi_warehouse_name AS warehouse,
+SUM(im.riwi_unit_price * im.riwi_quantity) AS total_value
+FROM riwi_warehouses w
+JOIN riwi_purcharses pu
+ON w.id = pu.riwi_id_warehouse
+JOIN riwi_inventory_movements im
+ON pu.riwi_id_movement = im.id
+WHERE im.riwi_movement_type = 'OUT'
+GROUP BY w.riwi_warehouse_name
+ORDER BY total_value DESC;
+
+
+
+/*
+	VIEW CREATION
+*/
+
+CREATE VIEW view_avaliable_products AS
+SELECT
+pro.riwi_product_name AS product,
+SUM(im.riwi_quantity) AS quantity
+FROM riwi_products pro
+JOIN riwi_purcharses pu
+ON pro.id = pu.riwi_id_product
+JOIN riwi_inventory_movements im
+ON pu.riwi_id_product = im.id
+WHERE im.riwi_movement_type = 'IN'
+GROUP BY pro.riwi_product_name
+ORDER BY quantity DESC;
+
+CREATE VIEW view_inventory_movements_detailed AS
+SELECT
+im.riwi_movement_type AS movement,
+pro.riwi_product_name AS product,
+w.riwi_warehouse_name AS warehouse,
+COUNT(*) as times_moved
+FROM riwi_inventory_movements im
+JOIN riwi_purcharses pu
+ON im.id = pu.riwi_id_movement
+JOIN riwi_products pro
+ON pu.riwi_id_product = pro.id
+JOIN riwi_warehouses w
+ON pu.riwi_id_warehouse = w.id
+GROUP BY im.riwi_movement_type, pro.riwi_product_name, w.riwi_warehouse_name;
+
+CREATE VIEW view_total_purcharsed_by_supplier AS
+SELECT
+s.riwi_supplier_name AS supplier,
+SUM(im.riwi_unit_price * im.riwi_quantity) AS total_value
+FROM riwi_suppliers s
+JOIN riwi_purcharses pu
+ON s.id = pu.riwi_id_supplier
+JOIN riwi_inventory_movements im
+ON pu.riwi_id_movement = im.id
+WHERE im.riwi_movement_type = 'IN'
+GROUP BY s.riwi_supplier_name
+ORDER BY total_value DESC;
+
+/*
+	See views
+*/
+
+-- Same as Query 1
+SELECT * FROM view_avaliable_products;
+
+-- Same as Query 2
+SELECT * FROM view_inventory_movements_detailed;
+
+-- Same as Query 3
+SELECT * FROM view_inventory_movements_detailed;

@@ -1,0 +1,23 @@
+/*
+	Data manipulation
+*/
+
+-- Insertion
+INSERT INTO riwi_suppliers(riwi_supplier_name, riwi_id_city)
+VALUES('Riwi_Proveedor S.A.S', 1);
+
+INSERT INTO riwi_products(riwi_product_name, riwi_id_category)
+VALUES ('Destornillador', 3);
+
+-- Update
+UPDATE riwi_suppliers
+SET riwi_supplier_name = 'Riwi Proveedor S.A.S'
+WHERE id = 4
+
+-- Delete
+DELETE FROM riwi_products
+WHERE id = 5;
+
+
+SELECT * FROM riwi_suppliers;
+SELECT * FROM riwi_products;

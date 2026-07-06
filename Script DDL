@@ -1,0 +1,66 @@
+-- Database creation
+CREATE DATABASE bd_jorge_carmona_mulata;
+
+/*
+	Table Creation
+*/
+
+-- Dim_Cities
+CREATE TABLE riwi_cities (
+	id SERIAL PRIMARY KEY,
+	riwi_city_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Dim_Categories
+CREATE TABLE riwi_categories (
+	id SERIAL PRIMARY KEY,
+	riwi_category_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Dim_Suppliers
+CREATE TABLE riwi_suppliers(
+	id SERIAL PRIMARY KEY,
+	riwi_supplier_name VARCHAR(100) NOT NULL UNIQUE,
+	riwi_id_city INT NOT NULL,
+	FOREIGN KEY (riwi_id_city) REFERENCES riwi_cities(id)
+);
+
+-- Dim_Warehouses
+CREATE TABLE riwi_warehouses(
+	id SERIAL PRIMARY KEY,
+	riwi_warehouse_name VARCHAR(100) NOT NULL,
+	riwi_id_city INT NOT NULL,
+	FOREIGN KEY (riwi_id_city) REFERENCES riwi_cities(id),
+	UNIQUE (riwi_warehouse_name, riwi_id_city)
+);
+
+-- Dim_Products
+CREATE TABLE riwi_products(
+	id SERIAL PRIMARY KEY,
+	riwi_product_name VARCHAR(150) NOT NULL UNIQUE,
+	riwi_id_category INT NOT NULL,
+	FOREIGN KEY (riwi_id_category) REFERENCES riwi_categories(id)
+);
+
+-- FT_Inventory_Movements
+CREATE TABLE riwi_inventory_movements(
+	id SERIAL PRIMARY KEY,
+	riwi_movement_type VARCHAR(20) NOT NULL CHECK (riwi_movement_type IN ('IN', 'OUT')),
+	riwi_quantity INT NOT NULL CHECK (riwi_quantity > 0),
+	riwi_unit_price numeric NOT NULL CHECK (riwi_unit_price >= 0)
+);
+
+-- FT_Purcharses
+CREATE TABLE riwi_purcharses(
+	id SERIAL PRIMARY KEY,
+	riwi_purcharse_order VARCHAR(50) NOT NULL,
+	riwi_movement_date DATE NOT NULL,
+	riwi_id_supplier INT NOT NULL,
+	riwi_id_warehouse INT NOT NULL,
+	riwi_id_product INT NOT NULL,
+	riwi_id_movement INT NOT NULL,
+	FOREIGN KEY (riwi_id_supplier) REFERENCES riwi_suppliers(id),
+	FOREIGN KEY (riwi_id_warehouse) REFERENCES riwi_warehouses(id),
+	FOREIGN KEY (riwi_id_product) REFERENCES riwi_products(id),
+	FOREIGN KEY (riwi_id_movement) REFERENCES riwi_inventory_movements(id)	
+);
