@@ -12,7 +12,7 @@ VALUES ('Destornillador', 3);
 -- Update
 UPDATE riwi_suppliers
 SET riwi_supplier_name = 'Riwi Proveedor S.A.S'
-WHERE id = 4
+WHERE id = 4;
 
 -- Delete
 DELETE FROM riwi_products

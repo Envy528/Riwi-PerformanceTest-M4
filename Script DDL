@@ -58,7 +58,7 @@ CREATE TABLE riwi_purcharses(
 	riwi_id_supplier INT NOT NULL,
 	riwi_id_warehouse INT NOT NULL,
 	riwi_id_product INT NOT NULL,
-	riwi_id_movement INT NOT NULL,
+	riwi_id_movement INT NOT NULL UNIQUE,
 	FOREIGN KEY (riwi_id_supplier) REFERENCES riwi_suppliers(id),
 	FOREIGN KEY (riwi_id_warehouse) REFERENCES riwi_warehouses(id),
 	FOREIGN KEY (riwi_id_product) REFERENCES riwi_products(id),

@@ -5,13 +5,15 @@
 -- 1 Query
 SELECT
 pro.riwi_product_name AS product,
-SUM(im.riwi_quantity) AS quantity
+SUM(CASE 
+	WHEN riwi_movement_type='IN' 
+	THEN riwi_quantity 
+	ELSE -riwi_quantity END) AS quantity
 FROM riwi_products pro
 JOIN riwi_purcharses pu
 ON pro.id = pu.riwi_id_product
 JOIN riwi_inventory_movements im
-ON pu.riwi_id_product = im.id
-WHERE im.riwi_movement_type = 'IN'
+ON pu.riwi_id_movement = im.id
 GROUP BY pro.riwi_product_name
 ORDER BY quantity DESC;
 
@@ -87,13 +89,15 @@ ORDER BY total_value DESC;
 CREATE VIEW view_avaliable_products AS
 SELECT
 pro.riwi_product_name AS product,
-SUM(im.riwi_quantity) AS quantity
+SUM(CASE 
+	WHEN riwi_movement_type='IN' 
+	THEN riwi_quantity 
+	ELSE -riwi_quantity END) AS quantity
 FROM riwi_products pro
 JOIN riwi_purcharses pu
 ON pro.id = pu.riwi_id_product
 JOIN riwi_inventory_movements im
-ON pu.riwi_id_product = im.id
-WHERE im.riwi_movement_type = 'IN'
+ON pu.riwi_id_movement = im.id
 GROUP BY pro.riwi_product_name
 ORDER BY quantity DESC;
 
@@ -136,4 +140,4 @@ SELECT * FROM view_avaliable_products;
 SELECT * FROM view_inventory_movements_detailed;
 
 -- Same as Query 3
-SELECT * FROM view_inventory_movements_detailed;
+SELECT * FROM view_total_purcharsed_by_supplier;
